@@ -27,7 +27,7 @@ SPEC CHECKSUMS:
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   FBSnapshotTestCase: 432afd8d059ccef7f207225894840a03fbcf7474
-  LIPhotosKitManager: 4b844a150beed1f22269bd7d5dd8cef73ff221bc
+  LIPhotosKitManager: c3754567f8bc026ba8afbfd698cc691761bd1fdf
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
 PODFILE CHECKSUM: 0b37cdca7b99bf38e3d9e5701f9d8aeb0693c183
