@@ -20,9 +20,69 @@ it, simply add the following line to your Podfile:
 pod "LIPhotosKitManager"
 ```
 
+## How to user
+
+#### Importing Headers then create property and initialization
+
+~~~objectiveC
+#import <LIPhotosKitManager.h> //---------------------------------------1
+
+@interface ViewController ()<LIPhotosKitManagerDelegate>
+@property (nonatomic, strong) LIPhotosKitManager *manager; //-----------2
+@end
+
+@implementation ViewController
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    //------------------------------------------------------------------3
+    self.manager = [[LIPhotosKitManager alloc] init];
+    self.manager.delagate = self;
+}
+
+- (void)managerDidReceivePhotoLibraryChangeNotification
+{    
+	// delegate method
+    // update your datasource and refresh ui
+}
+@end
+
+~~~
+
+#### Get Albums 
+You can use `allSystemAlbums` or `allUserCustomAlbums` methods to get albums in your device. These methods return a array contain `LIAlbum` objects.
+
+~~~objectiveC
+NSArray *systemAlbums = [self.manager allSystemAlbums];
+NSArray *customAlbums = [self.manager allUserCustomAlbums];
+~~~
+
+#### Get Photos
+Before obtaining Photos, you must get the `ALID` object. There are two ways to get that object. One is read from `ALAlbum` object, another is use the `allPhotosIDSortByCreateDateAscending:` method
+
+~~~objectiveC
+NSArray *imageIDs = [self.manager allPhotosIDSortByCreateDateAscending:YES];
+~~~
+Everything is ready ,use the following methods to get the photos you want.:
+
+* requestThumbnailImageForID:size:contentMode:target:resultHandler: 
+* requestOriginalImageForID:target:resultHandler:
+* requestOriginalImageDataForID:target:resultHandler:
+
+Esample 
+
+~~~objectiveC
+LIID *idObj = self.imageIDs[index];
+UIImageView *imageView = self.imageView;
+[self.manager requestThumbnailImageForID:idObj size:CGSizeMake(100, 100) contentMode:0 target:imageView resultHandler:^(UIImage *result, id target, NSDictionary *info) {
+	UIImageView *imageView = target;
+	imageView.image = result;
+}];
+~~~
+
 ## Author
 
-Robert, robert@ganguo.hk
+Ruwei Li, liruwei0109@outlook.com
 
 ## License
 
