@@ -59,7 +59,7 @@ NSArray *customAlbums = [self.manager allUserCustomAlbums];
 ~~~
 
 #### Get Photos
-Before obtaining Photos, you must get the `ALID` object. There are two ways to get that object. One is read from `ALAlbum` object, another is use the `allPhotosIDSortByCreateDateAscending:`
+Before obtaining Photos, you must get the `LIID` object. There are two ways to get that object. One is read from `LIAlbum` object, another is use the `allPhotosIDSortByCreateDateAscending:`
 
 ~~~objectiveC
 NSArray *imageIDs = [self.manager allPhotosIDSortByCreateDateAscending:YES];
