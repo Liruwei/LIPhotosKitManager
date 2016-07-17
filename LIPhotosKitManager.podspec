@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'LIPhotosKitManager'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of LIPhotosKitManager.'
+  s.summary          = 'Easier to use PhotosKit.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
