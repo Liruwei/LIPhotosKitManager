@@ -11,6 +11,9 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
+* Xcode 6
+* iOS 8.0 +
+
 ## Installation
 
 LIPhotosKitManager is available through [CocoaPods](http://cocoapods.org). To install
