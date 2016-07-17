@@ -1,0 +1,6 @@
+framework module LIPhotosKitManager {
+  umbrella header "LIPhotosKitManager-umbrella.h"
+
+  export *
+  module * { export * }
+}

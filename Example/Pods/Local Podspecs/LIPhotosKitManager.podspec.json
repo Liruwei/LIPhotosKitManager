@@ -1,0 +1,22 @@
+{
+  "name": "LIPhotosKitManager",
+  "version": "0.1.0",
+  "summary": "A short description of LIPhotosKitManager.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/LIPhotosKitManager",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Robert": "robert@ganguo.hk"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/LIPhotosKitManager.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "LIPhotosKitManager/Classes/**/*"
+}
