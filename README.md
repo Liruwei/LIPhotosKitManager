@@ -59,12 +59,12 @@ NSArray *customAlbums = [self.manager allUserCustomAlbums];
 ~~~
 
 #### Get Photos
-Before obtaining Photos, you must get the `ALID` object. There are two ways to get that object. One is read from `ALAlbum` object, another is use the `allPhotosIDSortByCreateDateAscending:` method
+Before obtaining Photos, you must get the `ALID` object. There are two ways to get that object. One is read from `ALAlbum` object, another is use the `allPhotosIDSortByCreateDateAscending:`
 
 ~~~objectiveC
 NSArray *imageIDs = [self.manager allPhotosIDSortByCreateDateAscending:YES];
 ~~~
-Everything is ready ,use the following methods to get the photos you want.:
+Everything is ready ,use the following methods to get the photos you want:
 
 * requestThumbnailImageForID:size:contentMode:target:resultHandler: 
 * requestOriginalImageForID:target:resultHandler:
