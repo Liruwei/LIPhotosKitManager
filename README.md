@@ -21,7 +21,7 @@ it, simply add the following line to your Podfile:
 pod "LIPhotosKitManager"
 ```
 
-## How to user
+## How to use
 
 #### Importing Headers then create property and initialization
 
