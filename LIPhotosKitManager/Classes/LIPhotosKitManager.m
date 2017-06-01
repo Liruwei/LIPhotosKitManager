@@ -119,6 +119,23 @@ static NSString * LIAlbumPhotos = @"photos";
     }];
 }
 
+-(void)requestVideoUrlForID:(LIID*)idObj target:(id)target resultHandler:(LIVideoHandler)handleBlock{
+    objc_setAssociatedObject(target, TargetIndentifierKey, idObj.identifier, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    PHAsset *asset = [self getAssetFromID:idObj];
+    
+    PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+    options.version = PHVideoRequestOptionsVersionOriginal;
+    
+    PHImageManager *imageManager = [PHImageManager defaultManager];
+
+    [imageManager requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info) {
+        if ([asset isKindOfClass:[AVURLAsset class]]) {
+            NSURL *URL = [(AVURLAsset *)asset URL];
+            handleBlock(URL,target,info);
+        }
+    }];
+}
+
 - (PHAsset *)getAssetFromID:(LIID *)idObj
 {
     return self.photosResultsDic[idObj.albumName][idObj.index];
@@ -134,6 +151,9 @@ static NSString * LIAlbumPhotos = @"photos";
         [idObj setValue:@(idx) forKey:LIIDIndex];
         [idObj setValue:info[LIIDAlbumName] forKey:LIIDAlbumName];
         [idObj setValue:info[LIIDAlbumIdentifier] forKey:LIIDAlbumIdentifier];
+        idObj.type = asset.mediaType;
+        idObj.duration = asset.duration;
+        
         [array addObject:idObj];
     }];
     return array;

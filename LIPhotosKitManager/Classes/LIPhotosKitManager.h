@@ -8,6 +8,7 @@
 @import UIKit;
 @import Foundation;
 
+@import Photos;
 
 typedef NS_ENUM(NSInteger,LIImageContentMode) {
     LIImageContentModeAspectFit = 0,
@@ -16,6 +17,7 @@ typedef NS_ENUM(NSInteger,LIImageContentMode) {
 };
 
 typedef void(^LIImageHandler)(UIImage  *_Nullable result ,id  _Nonnull target ,NSDictionary *_Nullable info);
+typedef void(^LIVideoHandler)(NSURL  *_Nullable videoUrl ,id  _Nonnull target ,NSDictionary *_Nullable info);
 typedef void(^LIImageDataHandler)(NSData *_Nullable imageData,id  _Nonnull target, NSString *_Nullable dataUTI, UIImageOrientation orientation, NSDictionary *_Nullable info);
 
 
@@ -44,6 +46,8 @@ typedef void(^LIImageDataHandler)(NSData *_Nullable imageData,id  _Nonnull targe
 - (void)requestOriginalImageForID:(LIID *_Nonnull)idObj target:(id _Nonnull)target resultHandler:(LIImageHandler _Nonnull)result;
 - (void)requestOriginalImageDataForID:(LIID *_Nonnull)idObj target:(id _Nonnull)target resultHandler:(LIImageDataHandler _Nonnull)result;
 
+-(void)requestVideoUrlForID:(LIID* _Nonnull)idObj target:(id _Nonnull)target resultHandler:(LIVideoHandler _Nonnull)handleBlock;
+
 @end
 
 
@@ -62,6 +66,9 @@ typedef void(^LIImageDataHandler)(NSData *_Nullable imageData,id  _Nonnull targe
 @property (nonatomic, copy, readonly, nonnull) NSString *identifier;
 @property (nonatomic, copy, readonly, nullable) NSString *albumName;
 @property (nonatomic, copy, readonly,nonnull) NSString *albumIdentifier;
+@property (nonatomic) PHAssetMediaType type;
+@property (nonatomic) NSTimeInterval duration;
+
 @end
 
 @interface LIAlbum : NSObject
