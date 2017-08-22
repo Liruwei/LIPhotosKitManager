@@ -82,8 +82,10 @@ static NSString * LIAlbumPhotos = @"photos";
     CGSize targetSize = CGSizeMake(imageSize.width * scale, imageSize.height * scale);
     PHImageContentMode imageContentMode = [self transformImageContentMode:contentMode];
     PHImageManager *imageManager = [PHImageManager defaultManager];
+    PHImageRequestOptions *options = [PHImageRequestOptions new];
+    options.networkAccessAllowed = YES;
     
-    [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:imageContentMode options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
+    [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:imageContentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
         NSString *identifier = objc_getAssociatedObject(target, TargetIndentifierKey);
         if ([identifier isEqualToString:asset.localIdentifier]) {
             handelBlock(result,target,info);
@@ -96,8 +98,10 @@ static NSString * LIAlbumPhotos = @"photos";
     objc_setAssociatedObject(target, TargetIndentifierKey, idObj.identifier, OBJC_ASSOCIATION_COPY_NONATOMIC);
     PHAsset *asset =  [self getAssetFromID:idObj];
     PHImageManager *imageManager = [PHImageManager defaultManager];
+    PHImageRequestOptions *options = [PHImageRequestOptions new];
+    options.networkAccessAllowed = YES;
     
-    [imageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    [imageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         NSString *identifier = objc_getAssociatedObject(target, TargetIndentifierKey);
         if ([identifier isEqualToString:asset.localIdentifier]) {
             handelBlock(result,target,info);
@@ -110,8 +114,10 @@ static NSString * LIAlbumPhotos = @"photos";
     objc_setAssociatedObject(target, TargetIndentifierKey, idObj.identifier, OBJC_ASSOCIATION_COPY_NONATOMIC);
     PHAsset *asset = [self getAssetFromID:idObj];
     PHImageManager *imageManager = [PHImageManager defaultManager];
+    PHImageRequestOptions *options = [PHImageRequestOptions new];
+    options.networkAccessAllowed = YES;
     
-    [imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+    [imageManager requestImageDataForAsset:asset options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
         NSString *identifier = objc_getAssociatedObject(target, TargetIndentifierKey);
         if ([identifier isEqualToString:asset.localIdentifier]) {
             handelBlock(imageData,target,dataUTI,orientation,info);
@@ -125,6 +131,7 @@ static NSString * LIAlbumPhotos = @"photos";
     
     PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
     options.version = PHVideoRequestOptionsVersionOriginal;
+    options.networkAccessAllowed = YES;
     
     PHImageManager *imageManager = [PHImageManager defaultManager];
 
