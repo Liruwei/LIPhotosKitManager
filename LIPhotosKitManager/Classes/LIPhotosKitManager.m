@@ -82,8 +82,10 @@ static NSString * LIAlbumPhotos = @"photos";
     CGSize targetSize = CGSizeMake(imageSize.width * scale, imageSize.height * scale);
     PHImageContentMode imageContentMode = [self transformImageContentMode:contentMode];
     PHImageManager *imageManager = [PHImageManager defaultManager];
+    PHImageRequestOptions *options = [PHImageRequestOptions new];
+    options.networkAccessAllowed = YES;
     
-    [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:imageContentMode options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
+    [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:imageContentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
         NSString *identifier = objc_getAssociatedObject(target, TargetIndentifierKey);
         if ([identifier isEqualToString:asset.localIdentifier]) {
             handelBlock(result,target,info);
@@ -96,8 +98,10 @@ static NSString * LIAlbumPhotos = @"photos";
     objc_setAssociatedObject(target, TargetIndentifierKey, idObj.identifier, OBJC_ASSOCIATION_COPY_NONATOMIC);
     PHAsset *asset =  [self getAssetFromID:idObj];
     PHImageManager *imageManager = [PHImageManager defaultManager];
+    PHImageRequestOptions *options = [PHImageRequestOptions new];
+    options.networkAccessAllowed = YES;
     
-    [imageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    [imageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         NSString *identifier = objc_getAssociatedObject(target, TargetIndentifierKey);
         if ([identifier isEqualToString:asset.localIdentifier]) {
             handelBlock(result,target,info);
@@ -110,11 +114,31 @@ static NSString * LIAlbumPhotos = @"photos";
     objc_setAssociatedObject(target, TargetIndentifierKey, idObj.identifier, OBJC_ASSOCIATION_COPY_NONATOMIC);
     PHAsset *asset = [self getAssetFromID:idObj];
     PHImageManager *imageManager = [PHImageManager defaultManager];
+    PHImageRequestOptions *options = [PHImageRequestOptions new];
+    options.networkAccessAllowed = YES;
     
-    [imageManager requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+    [imageManager requestImageDataForAsset:asset options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
         NSString *identifier = objc_getAssociatedObject(target, TargetIndentifierKey);
         if ([identifier isEqualToString:asset.localIdentifier]) {
             handelBlock(imageData,target,dataUTI,orientation,info);
+        }
+    }];
+}
+
+-(void)requestVideoUrlForID:(LIID*)idObj target:(id)target resultHandler:(LIVideoHandler)handleBlock{
+    objc_setAssociatedObject(target, TargetIndentifierKey, idObj.identifier, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    PHAsset *asset = [self getAssetFromID:idObj];
+    
+    PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+    options.version = PHVideoRequestOptionsVersionOriginal;
+    options.networkAccessAllowed = YES;
+    
+    PHImageManager *imageManager = [PHImageManager defaultManager];
+
+    [imageManager requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info) {
+        if ([asset isKindOfClass:[AVURLAsset class]]) {
+            NSURL *URL = [(AVURLAsset *)asset URL];
+            handleBlock(URL,target,info);
         }
     }];
 }
@@ -134,6 +158,9 @@ static NSString * LIAlbumPhotos = @"photos";
         [idObj setValue:@(idx) forKey:LIIDIndex];
         [idObj setValue:info[LIIDAlbumName] forKey:LIIDAlbumName];
         [idObj setValue:info[LIIDAlbumIdentifier] forKey:LIIDAlbumIdentifier];
+        idObj.type = asset.mediaType;
+        idObj.duration = asset.duration;
+        
         [array addObject:idObj];
     }];
     return array;
