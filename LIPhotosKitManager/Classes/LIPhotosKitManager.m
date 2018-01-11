@@ -74,7 +74,7 @@ static NSString * LIAlbumPhotos = @"photos";
     return [identifiers mutableCopy];
 }
 
-- (void)requestThumbnailImageForID:(LIID *)idObj size:(CGSize)imageSize contentMode:(LIImageContentMode)contentMode target:(id)target resultHandler:(LIImageHandler)handelBlock
+- (PHImageRequestID)requestThumbnailImageForID:(LIID *)idObj size:(CGSize)imageSize contentMode:(LIImageContentMode)contentMode target:(id)target resultHandler:(LIImageHandler)handelBlock
 {
     objc_setAssociatedObject(target, TargetIndentifierKey, idObj.identifier, OBJC_ASSOCIATION_COPY_NONATOMIC);
     PHAsset *asset = [self getAssetFromID:idObj];
@@ -85,7 +85,7 @@ static NSString * LIAlbumPhotos = @"photos";
     PHImageRequestOptions *options = [PHImageRequestOptions new];
     options.networkAccessAllowed = YES;
     
-    [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:imageContentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
+    return [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:imageContentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
         NSString *identifier = objc_getAssociatedObject(target, TargetIndentifierKey);
         if ([identifier isEqualToString:asset.localIdentifier]) {
             handelBlock(result,target,info);
@@ -130,29 +130,13 @@ static NSString * LIAlbumPhotos = @"photos";
     PHAsset *asset = [self getAssetFromID:idObj];
     
     PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
-    options.version = PHVideoRequestOptionsVersionCurrent;
+    options.version = PHVideoRequestOptionsVersionOriginal;
     options.networkAccessAllowed = YES;
     
     PHImageManager *imageManager = [PHImageManager defaultManager];
 
     [imageManager requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset *asset, AVAudioMix *audioMix, NSDictionary *info) {
-        if(([asset isKindOfClass:[AVComposition class]] && ((AVComposition *)asset).tracks.count == 2)){
-            NSURL *url = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:[NSString stringWithFormat:@"slowMo-%d.mov",arc4random() % 100000]];
-            
-            AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetHighestQuality];
-            exporter.outputURL = url;
-            exporter.outputFileType = AVFileTypeQuickTimeMovie;
-            exporter.shouldOptimizeForNetworkUse = YES;
-            
-            [exporter exportAsynchronouslyWithCompletionHandler:^{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (exporter.status == AVAssetExportSessionStatusCompleted) {
-                        NSURL *URL = exporter.outputURL;
-                        handleBlock(URL,target,info);
-                    }
-                });
-            }];
-        }else if ([asset isKindOfClass:[AVURLAsset class]]) {
+        if ([asset isKindOfClass:[AVURLAsset class]]) {
             NSURL *URL = [(AVURLAsset *)asset URL];
             handleBlock(URL,target,info);
         }
