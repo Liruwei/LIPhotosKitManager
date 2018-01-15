@@ -38,7 +38,7 @@ typedef void(^LIImageDataHandler)(NSData *_Nullable imageData,id  _Nonnull targe
 
 - (NSArray<LIID*> *_Nonnull)allPhotosIDSortByCreateDateAscending:(BOOL)ascending;
 
-- (void)requestThumbnailImageForID:(LIID *_Nonnull)idObj size:(CGSize)imageSize contentMode:(LIImageContentMode)contentMode target:(id _Nonnull)target resultHandler:(LIImageHandler _Nonnull)result;
+- (PHImageRequestID)requestThumbnailImageForID:(LIID *_Nonnull)idObj size:(CGSize)imageSize contentMode:(LIImageContentMode)contentMode target:(id _Nonnull)target resultHandler:(LIImageHandler _Nonnull)result;
 
 /**
  *  Generally do not need to call this method , because the original image is too big , you can use `requestThumbnailImageForID:size:contentMode:target:resultHandler:` method to obtain a large-size image

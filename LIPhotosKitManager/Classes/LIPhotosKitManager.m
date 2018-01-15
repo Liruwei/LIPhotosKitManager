@@ -74,7 +74,7 @@ static NSString * LIAlbumPhotos = @"photos";
     return [identifiers mutableCopy];
 }
 
-- (void)requestThumbnailImageForID:(LIID *)idObj size:(CGSize)imageSize contentMode:(LIImageContentMode)contentMode target:(id)target resultHandler:(LIImageHandler)handelBlock
+- (PHImageRequestID)requestThumbnailImageForID:(LIID *)idObj size:(CGSize)imageSize contentMode:(LIImageContentMode)contentMode target:(id)target resultHandler:(LIImageHandler)handelBlock
 {
     objc_setAssociatedObject(target, TargetIndentifierKey, idObj.identifier, OBJC_ASSOCIATION_COPY_NONATOMIC);
     PHAsset *asset = [self getAssetFromID:idObj];
@@ -85,7 +85,7 @@ static NSString * LIAlbumPhotos = @"photos";
     PHImageRequestOptions *options = [PHImageRequestOptions new];
     options.networkAccessAllowed = YES;
     
-    [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:imageContentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
+    return [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:imageContentMode options:options resultHandler:^(UIImage *result, NSDictionary *info) {
         NSString *identifier = objc_getAssociatedObject(target, TargetIndentifierKey);
         if ([identifier isEqualToString:asset.localIdentifier]) {
             handelBlock(result,target,info);
